@@ -125,4 +125,38 @@ public class RegionController {
         }
         return "redirect:/regions";
     }
+
+    /**
+     * Muestra el detalle de una región específica, incluyendo su lista de provincias asociadas.
+     *
+     * @param id                 Identificador único de la región que se desea consultar.
+     * @param model              Modelo de Spring MVC utilizado para pasar datos a la vista.
+     * @param redirectAttributes Objeto para enviar mensajes flash de error o información al redirigir.
+     * @param locale             Configuración regional actual del usuario (para internacionalización de mensajes).
+     * @return El nombre de la plantilla Thymeleaf que muestra el detalle de la región
+     *         ({@code views/region/region-detail}), o una redirección a {@code /regions} en caso de error.
+     */
+    @GetMapping("/detail")
+    public String showDetail(@RequestParam("id") Long id,
+                             Model model,
+                             RedirectAttributes redirectAttributes,
+                             Locale locale) {
+        logger.info("Mostrando detalle de la región con ID {}", id);
+        try {
+            // Cargar la región junto con sus provincias (fetch) para evitar LazyInitializationException
+            Region region = regionDAO.getRegionById(id);
+            if (region == null) {
+                String msg = messageSource.getMessage("msg.region-controller.detail.notFound", null, locale);
+                redirectAttributes.addFlashAttribute("errorMessage", msg);
+                return "redirect:/regions";
+            }
+            model.addAttribute("region", region);
+            return "views/region/region-detail";
+        } catch (Exception e) {
+            logger.error("Error al obtener el detalle de la región {}: {}", id, e.getMessage(), e);
+            String msg = messageSource.getMessage("msg.region-controller.detail.error", null, locale);
+            redirectAttributes.addFlashAttribute("errorMessage", msg);
+            return "redirect:/regions";
+        }
+    }
 }

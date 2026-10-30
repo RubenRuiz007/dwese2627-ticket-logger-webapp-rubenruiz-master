@@ -51,7 +51,7 @@
                 </select>
                 <!-- Errores asociados a la región (NotNull en province.region) -->
                 <!-- Se corresponde con la validación derivada del Entity -->
-                <div class="text-danger" th:if="${#fields.hasErrors('regionSelected')}" th:errors="*{regionSelected}"></div>
+                <div class="text-danger" th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></div>
             </div>
 
             <!-- Botón submit dinámico -->

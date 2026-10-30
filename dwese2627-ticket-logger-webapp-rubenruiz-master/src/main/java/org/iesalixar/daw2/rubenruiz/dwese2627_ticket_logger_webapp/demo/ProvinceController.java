@@ -173,4 +173,36 @@ public class ProvinceController {
         return "redirect:/provinces";
     }
 
+    /**
+     * Muestra el detalle de una provincia específica, incluyendo su región asociada.
+     *
+     * @param id                 Identificador de la provincia a consultar.
+     * @param model              Modelo de Spring MVC para pasar datos a la vista.
+     * @param redirectAttributes Mensajes flash al redirigir (errores/avisos).
+     * @param locale             Configuración regional para internacionalización de mensajes.
+     * @return Plantilla Thymeleaf {@code views/province/province-detail} o redirección a {@code /provinces}.
+     */
+    @GetMapping("/detail")
+    public String showDetail(@RequestParam("id") Long id,
+                             Model model,
+                             RedirectAttributes redirectAttributes,
+                             Locale locale) {
+        logger.info("Mostrando detalle de la provincia con ID {}", id);
+        try {
+            Province province = provinceDAO.getProvinceById(id);
+            if (province == null) {
+                logger.warn("No se encontró la provincia con ID {}", id);
+                String msg = messageSource.getMessage("msg.province-controller.detail.notFound", null, locale);
+                redirectAttributes.addFlashAttribute("errorMessage", msg);
+                return "redirect:/provinces";
+            }
+            model.addAttribute("province", province);
+            return "views/province/province-detail";
+        } catch (Exception e) {
+            logger.error("Error al obtener el detalle de la provincia {}: {}", id, e.getMessage(), e);
+            String msg = messageSource.getMessage("msg.province-controller.detail.error", null, locale);
+            redirectAttributes.addFlashAttribute("errorMessage", msg);
+            return "redirect:/provinces";
+        }
+    }
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Province Detail')"></head>
+
+
+<body class="d-flex flex-column h-100">
+
+
+<!-- Insertar el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+
+<!-- Contenido dinámico -->
+<main class="form-page">
+    <div class="form-card">
+
+        <!-- Título: Detalle provincia: {nombre} -->
+        <h1>
+            <span th:text="#{msg.province-detail.title}"></span>:
+            <span th:text="${province.name}"></span>
+        </h1>
+
+        <!-- Mensaje de error (si llega vía flash/atributo) -->
+        <div th:if="${errorMessage}"
+             class="alert alert-danger"
+             th:text="${errorMessage}"></div>
+
+        <!-- Datos básicos de la provincia -->
+        <div class="mt-3">
+            <h2 class="h5" th:text="#{msg.province-detail.section.provinceData}"></h2>
+            <dl class="row">
+                <dt class="col-sm-3" th:text="#{msg.province-detail.field.id}"></dt>
+                <dd class="col-sm-9" th:text="${province.id}"></dd>
+
+                <dt class="col-sm-3" th:text="#{msg.province-detail.field.code}"></dt>
+                <dd class="col-sm-9" th:text="${province.code}"></dd>
+
+                <dt class="col-sm-3" th:text="#{msg.province-detail.field.name}"></dt>
+                <dd class="col-sm-9" th:text="${province.name}"></dd>
+            </dl>
+        </div>
+
+        <!-- Región asociada (una sola) -->
+        <div class="mt-4">
+            <h2 class="h5" th:text="#{msg.province-detail.section.region}"></h2>
+
+            <div th:if="${province.region == null}"
+                 class="alert alert-info"
+                 th:text="#{msg.province-detail.region.empty}">
+            </div>
+
+            <div th:if="${province.region != null}">
+                <dl class="row">
+                    <dt class="col-sm-3" th:text="#{msg.province-detail.region.field.id}"></dt>
+                    <dd class="col-sm-9" th:text="${province.region.id}"></dd>
+
+                    <dt class="col-sm-3" th:text="#{msg.province-detail.region.field.code}"></dt>
+                    <dd class="col-sm-9" th:text="${province.region.code}"></dd>
+
+                    <dt class="col-sm-3" th:text="#{msg.province-detail.region.field.name}"></dt>
+                    <dd class="col-sm-9" th:text="${province.region.name}"></dd>
+                </dl>
+
+                <!-- Ver detalle de la región -->
+                <a class="btn btn-sm btn-outline-primary me-2"
+                   th:href="@{/regions/detail(id=${province.region.id})}"
+                   th:text="#{msg.province-detail.region.viewDetail}">
+                </a>
+            </div>
+        </div>
+
+        <!-- Volver -->
+        <div class="mt-4">
+            <a class="btn btn-secondary" th:href="@{/provinces}"
+               th:text="#{msg.province-detail.action.back}"></a>
+        </div>
+
+    </div>
+</main>
+
+<!-- Insertar el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+
+</body>
+</html>

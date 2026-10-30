@@ -2,7 +2,6 @@ package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.daos;
 
 import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Province;
 import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Region;
-import org.springframework.data.relational.core.sql.SQL;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -25,20 +25,32 @@
                 <th th:text="#{msg.region-list.actions}"></th>
             </tr>
             </thead>
-            <tbody th:each="region:${listRegions}">
-            <tr>
+            <tbody>
+            <tr th:each="region : ${listRegions}">
                 <td th:text="${region.id}"></td>
                 <td th:text="${region.code}"></td>
                 <td th:text="${region.name}"></td>
-                <td><a th:href="@{/regions/edit(id=${region.id})}" class="btn btn-primary btn-sm" th:text="#{msg.region-list.edit}"></a>
+                <td>
+                    <!-- Ver detalle -->
+                    <a th:href="@{/regions/detail(id=${region.id})}"
+                       class="btn btn-outline-secondary btn-sm me-1"
+                       th:text="#{msg.region-list.viewDetail}"></a>
+
+                    <!-- Editar -->
+                    <a th:href="@{/regions/edit(id=${region.id})}"
+                       class="btn btn-primary btn-sm"
+                       th:text="#{msg.region-list.edit}"></a>
+
+                    <!-- Eliminar -->
                     <form th:action="@{/regions/delete}" method="post" class="d-inline">
-                        <input type="hidden" name="id" th:value="${region.id}">
-                        <button type="submit" class="btn btn-danger btn-sm"
-                                th:onclick="|return confirm('¿Estas seguro  de querer eliminar esta región?');|" th:text="#{msg.region-list.delete}"></button>
+                        <input type="hidden" name="id" th:value="${region.id}"/>
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                th:text="#{msg.region-list.delete}"
+                                th:onclick="|return confirm('#{msg.region-list.confirm}');|"></button>
                     </form>
                 </td>
             </tr>
-            </tbody>
         </table>
         <a th:href="@{/}" class="btn btn-secondary" th:text="#{msg.region-form.returnback}"></a>
     </div>

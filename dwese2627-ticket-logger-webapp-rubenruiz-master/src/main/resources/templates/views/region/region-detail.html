@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Region Detail')"></head>
+
+
+<body class="d-flex flex-column h-100">
+
+
+<!-- Insertar el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+
+<!-- Contenido dinámico -->
+<main class="form-page">
+    <div class="form-card">
+
+        <!-- Título: Detalle Región: {nombre} -->
+        <h1>
+            <span th:text="#{msg.region-detail.title}"></span>:
+            <span th:text="${region.name}"></span>
+        </h1>
+
+        <!-- Datos básicos de la región -->
+        <div class="mt-3">
+            <h2 class="h5" th:text="#{msg.region-detail.section.regionData}"></h2>
+            <dl class="row">
+                <dt class="col-sm-3" th:text="#{msg.region-detail.field.id}"></dt>
+                <dd class="col-sm-9" th:text="${region.id}"></dd>
+
+                <dt class="col-sm-3" th:text="#{msg.region-detail.field.code}"></dt>
+                <dd class="col-sm-9" th:text="${region.code}"></dd>
+
+                <dt class="col-sm-3" th:text="#{msg.region-detail.field.name}"></dt>
+                <dd class="col-sm-9" th:text="${region.name}"></dd>
+            </dl>
+        </div>
+
+        <!-- Provincias -->
+        <div class="mt-4">
+            <h2 class="h5" th:text="#{msg.region-detail.section.provinces}"></h2>
+
+            <!-- Estado vacío -->
+            <div class="alert alert-info" th:if="${#lists.isEmpty(region.provinces)}"
+                 th:text="#{msg.region-detail.provinces.empty}">
+            </div>
+
+            <!-- Tabla de provincias -->
+            <div th:if="${!#lists.isEmpty(region.provinces)}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                    <tr>
+                        <th scope="col" th:text="#{msg.region-detail.provinces.col.id}"></th>
+                        <th scope="col" th:text="#{msg.region-detail.provinces.col.code}"></th>
+                        <th scope="col" th:text="#{msg.region-detail.provinces.col.name}"></th>
+                        <th scope="col" class="text-end" th:text="#{msg.region-detail.provinces.col.actions}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="province : ${region.provinces}">
+                        <td th:text="${province.id}"></td>
+                        <td th:text="${province.code}"></td>
+                        <td th:text="${province.name}"></td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary"
+                               th:href="@{/provinces/detail(id=${province.id})}"
+                               th:text="#{msg.region-detail.viewDetail}">
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Volver al listado -->
+        <div class="mt-4">
+            <a class="btn btn-secondary" th:href="@{/regions}"
+               th:text="#{msg.region-detail.action.back}"></a>
+        </div>
+
+    </div>
+</main>
+
+<!-- Insertar el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+
+</body>
+</html>
