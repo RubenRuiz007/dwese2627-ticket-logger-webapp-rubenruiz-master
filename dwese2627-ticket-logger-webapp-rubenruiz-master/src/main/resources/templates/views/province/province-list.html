@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Home')"></head>
+
+<body class="d-flex flex-column h-100">
+
+<!-- Insertar el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<!-- Contenido dinámico -->
+<main class="list-page">
+    <div class="list-card">
+
+        <!-- Título listado -->
+        <h1 th:text="#{msg.province-list.title}"></h1>
+
+        <!-- Botón para añadir nueva provincia -->
+        <a th:href="@{/provinces/new}"
+           class="btn btn-success"
+           th:text="#{msg.province-list.add}"></a>
+
+        <!-- Mensaje de error -->
+        <div th:if="${errorMessage}"
+             class="alert alert-danger"
+             th:text="${errorMessage}"></div>
+
+        <!-- Tabla de provincias -->
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+            <tr>
+                <th th:text="#{msg.province-list.id}"></th>
+                <th th:text="#{msg.province-list.code}"></th>
+                <th th:text="#{msg.province-list.name}"></th>
+                <th th:text="#{msg.province-list.region}"></th>
+                <th th:text="#{msg.province-list.actions}"></th>
+            </tr>
+            </thead>
+            <!-- (aquí falta <tbody> y <tr th:each=...>) -->
+            <tbody th:each="province:${listProvinces}">
+            <tr>
+                <td th:text="${province.id}"></td>
+                <td th:text="${province.code}"></td>
+                <td th:text="${province.name}"></td>
+                <!-- Nombre de la Comunidad Autónoma asociada -->
+                <td th:text="${province.region != null ? province.region.name : ''}"></td>
+                <td>
+                    <!-- Editar -->
+                    <a th:href="@{/provinces/edit(id=${province.id})}"
+                       class="btn btn-primary btn-sm"
+                       th:text="#{msg.province-list.edit}"></a>
+
+                    <!-- Eliminar -->
+                    <form th:action="@{/provinces/delete}" method="post" class="d-inline">
+                        <input type="hidden" name="id" th:value="${province.id}"/>
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                th:text="#{msg.province-list.delete}"
+                                th:onclick="|return confirm('#{msg.province-list.confirm}');|"></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Volver -->
+        <a th:href="@{/}" class="btn btn-secondary" th:text="#{msg.province-form.returnback}"></a>
+
+    </div>
+</main>
+
+<!-- Insertar el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+</body>
+</html>

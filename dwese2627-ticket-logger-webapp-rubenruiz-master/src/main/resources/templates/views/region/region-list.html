@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Home')"></head>
+
+
+<body class="d-flex flex-column h-100">
+
+
+<!-- Insertar el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+
+<!-- Contenido dinámico -->
+<main class="list-page">
+    <div class="list-card">
+        <h1 th:text="#{msg.region-list.title}"></h1>
+        <a th:href="@{/regions/new}" class="btn btn-success" th:text="#{msg.region-list.add}"></a>
+        <div th:if="${errorMesage}" th:text="${errorMesage}" class="alert alert-danger"></div>
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+            <tr>
+                <th th:text="#{msg.region-list.id}"></th>
+                <th th:text="#{msg.region-form.code}">Código</th>
+                <th th:text="#{msg.region-form.name}"></th>
+                <th th:text="#{msg.region-list.actions}"></th>
+            </tr>
+            </thead>
+            <tbody th:each="region:${listRegions}">
+            <tr>
+                <td th:text="${region.id}"></td>
+                <td th:text="${region.code}"></td>
+                <td th:text="${region.name}"></td>
+                <td><a th:href="@{/regions/edit(id=${region.id})}" class="btn btn-primary btn-sm" th:text="#{msg.region-list.edit}"></a>
+                    <form th:action="@{/regions/delete}" method="post" class="d-inline">
+                        <input type="hidden" name="id" th:value="${region.id}">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                th:onclick="|return confirm('¿Estas seguro  de querer eliminar esta región?');|" th:text="#{msg.region-list.delete}"></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/}" class="btn btn-secondary" th:text="#{msg.region-form.returnback}"></a>
+    </div>
+</main>
+
+<!-- Insertar el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+
+</body>
+</html>

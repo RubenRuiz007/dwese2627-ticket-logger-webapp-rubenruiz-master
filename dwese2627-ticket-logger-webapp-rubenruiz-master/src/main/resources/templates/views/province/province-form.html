@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Home')"></head>
+
+<body class="d-flex flex-column h-100">
+
+<!-- Insertar el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<!-- Contenido dinámico -->
+<main class="form-page">
+    <div class="form-card">
+
+        <!-- Título dinámico (add/edit) -->
+        <h1 th:text="${province.id} == 0 ? #{msg.province-form.add} : #{msg.province-form.edit}"></h1>
+
+        <!-- Mensaje de error global -->
+        <div th:if="${errorMessage}"
+             class="alert alert-danger"
+             th:text="${errorMessage}"></div>
+
+        <!-- Formulario -->
+        <form th:action="${province.id} == 0 ? @{/provinces/insert} : @{/provinces/update}"
+              th:object="${province}" method="post" class="mt-3">
+
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Código -->
+            <div class="mb-3">
+                <label for="code" class="form-label" th:text="#{msg.province-form.code}"></label>
+                <input type="text" id="code" th:field="*{code}" class="form-control" />
+                <div th:if="${#fields.hasErrors('code')}" class="text-danger" th:errors="*{code}"></div>
+            </div>
+
+            <!-- Nombre -->
+            <div class="mb-3">
+                <label for="name" class="form-label" th:text="#{msg.province-form.name}"></label>
+                <input type="text" id="name" th:field="*{name}" class="form-control" />
+                <div th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></div>
+            </div>
+
+            <!-- Región (select). En edición debe aparecer la región actual seleccionada -->
+            <div class="mb-3">
+                <label for="region" class="form-label" th:text="#{msg.province-form.region}"></label>
+                <select id="region" class="form-select" th:field="*{region.id}">
+                    <!-- Opción vacía / placeholder -->
+                    <option value="" th:text="#{msg.province-form.region.select}"></option>
+
+                    <!-- Opciones de regiones -->
+                    <option th:each="reg : ${listRegions}" th:value="${reg.id}" th:text="${reg.name}"></option>
+                </select>
+                <!-- Errores asociados a la región (NotNull en province.region) -->
+                <!-- Se corresponde con la validación derivada del Entity -->
+                <div class="text-danger" th:if="${#fields.hasErrors('regionSelected')}" th:errors="*{regionSelected}"></div>
+            </div>
+
+            <!-- Botón submit dinámico -->
+            <button type="submit" class="btn btn-primary"
+                    th:text="${province.id} == 0 ? #{msg.province-form.create} : #{msg.province-form.update}"></button>
+
+            <!-- Volver al listado -->
+            <a th:href="@{/provinces}" class="btn btn-secondary" th:text="#{msg.province-form.returnback}"></a>
+
+        </form>
+
+    </div>
+</main>
+
+<!-- Insertar el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+</body>
+</html>
