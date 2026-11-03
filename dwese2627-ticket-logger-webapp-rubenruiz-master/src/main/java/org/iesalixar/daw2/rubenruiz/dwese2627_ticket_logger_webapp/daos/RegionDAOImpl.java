@@ -2,6 +2,7 @@ package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.daos;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Region;
 import org.slf4j.Logger;
@@ -154,5 +155,68 @@ public class RegionDAOImpl implements RegionDAO {
         boolean exists = count != null && count > 0;
         logger.info("Region with code: {} exists excluding id {}: {}", code, id, exists);
         return exists;
+    }
+
+    /**
+     * Lista una página de regiones ordenadas por nombre.
+     *
+     * @param page página actual (0-based)
+     * @param size número de elementos por página
+     * @return lista de regiones para esa página
+     */
+    /**
+     * Lista una página de regiones con ordenación dinámica.
+     *
+     * @param page      página actual (0-based)
+     * @param size      número de elementos por página
+     * @param sortField campo por el que se ordenan los resultados (id, code, name).
+     * @param sortDir   dirección de ordenación ("asc" o "desc").
+     * @return lista de regiones para esa página
+     */
+    @Override
+    public List<Region> listRegionsPage(int page, int size, String sortField, String sortDir) {
+        logger.info("Listing regions page={}, size={}, sortField={}, sortDir={} from the database.",
+                page, size, sortField, sortDir);
+        int offset = page * size;
+
+        // 1. Construcción de Criteria
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Region> cq = cb.createQuery(Region.class);
+        Root<Region> root = cq.from(Region.class);
+
+        // 2. Determinar el campo de ordenación permitido (whitelist)
+        Path<?> sortPath;
+        switch (sortField) {
+            case "id"   -> sortPath = root.get("id");
+            case "code" -> sortPath = root.get("code");
+            case "name" -> sortPath = root.get("name");
+            default     -> {
+                logger.warn("Unknown sortField '{}', defaulting to 'name'.", sortField);
+                sortPath = root.get("name");
+            }
+        }
+
+        // 3. Dirección de ordenación
+        boolean descending = "desc".equalsIgnoreCase(sortDir);
+        Order order = descending ? cb.desc(sortPath) : cb.asc(sortPath);
+
+        // 4. Aplicar ordenación a la query
+        cq.select(root).orderBy(order);
+
+        // 5. Crear TypedQuery, aplicar paginación y ejecutar
+        return entityManager.createQuery(cq)
+                .setFirstResult(offset)
+                .setMaxResults(size)
+                .getResultList();
+    }
+
+    /**
+     * Devuelve el número total de regiones.
+     */
+    @Override
+    public long countRegions() {
+        String hql = "SELECT COUNT(r) FROM Region r";
+        Long total = entityManager.createQuery(hql, Long.class).getSingleResult();
+        return (total != null) ? total : 0L;
     }
 }

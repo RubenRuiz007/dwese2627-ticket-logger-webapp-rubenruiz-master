@@ -34,21 +34,64 @@ public class RegionController {
     private MessageSource messageSource;
 
 
+    /**
+     * Lista las regiones de forma paginada y las pasa como atributo al modelo.
+     *
+     * @param page número de página (0-based)
+     * @param size tamaño de página (nº de elementos por página)
+     * @param model Objeto del modelo para pasar datos a la vista.
+     * @return El nombre de la plantilla Thymeleaf para renderizar la lista de regiones.
+     */
+    /**
+     * Lista paginada y ordenada de las regiones.
+     *
+     * @param page      número de página (0-based)
+     * @param size      tamaño de página (nº de elementos por página)
+     * @param sortField campo por el que se ordenan los resultados (id, code, name).
+     * @param sortDir   dirección de ordenación ("asc" o "desc").
+     * @param model     Objeto del modelo para pasar datos a la vista.
+     * @return El nombre de la plantilla Thymeleaf para renderizar la lista de regiones.
+     */
     @GetMapping
-    public String listRegions(Model model) {
-        logger.info("Solicitando la lista de todas las regiones...");
-        List<Region> listRegions = null;
-        List<RegionDTO> listRegionsDTOs = null;
+    public String listRegions(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "sortField", defaultValue = "name") String sortField,
+            @RequestParam(name = "sortDir", defaultValue = "asc") String sortDir,
+            Model model) {
+        logger.info("Listando regiones page={}, size={}, sortField={}, sortDir={}",
+                page, size, sortField, sortDir);
+
+        // Evitar valores negativos o tamaños raros
+        if (page < 0) page = 0;
+        if (size <= 0) size = 10;
         try {
-            listRegions = regionDAO.listAllRegions();
-            listRegionsDTOs = RegionMapper.toDTOList(listRegions);
-            logger.info("Se han cargado {} regiones.", listRegionsDTOs.size());
+            long totalElements = regionDAO.countRegions();
+            int totalPages = (int) Math.ceil((double) totalElements / size);
+            // Si se pide una página fuera de rango, ajustamos
+            if (totalPages > 0 && page >= totalPages) {
+                page = totalPages - 1;
+            }
+
+            List<Region> listRegions = regionDAO.listRegionsPage(page, size, sortField, sortDir);
+            List<RegionDTO> listRegionsDTOs = RegionMapper.toDTOList(listRegions);
+            logger.info("Se han cargado {} regiones en la página {}.", listRegionsDTOs.size(), page);
+
+            model.addAttribute("listRegions", listRegionsDTOs);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("pageSize", size);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("totalElements", totalElements);
+
+            // Para que la vista sepa cómo estamos ordenando ASC/DESC
+            model.addAttribute("sortField", sortField);
+            model.addAttribute("sortDir", sortDir);
+            model.addAttribute("reverseSortDir", "asc".equalsIgnoreCase(sortDir) ? "desc" : "asc");
         } catch (Exception e) {
             logger.error("Error al listar las regiones: {}", e.getMessage());
             model.addAttribute("errorMessage", "Error al listar las regiones.");
         }
-        model.addAttribute("listRegions", listRegionsDTOs);
-        return "views/region/region-list";
+        return "views/region/region-list"; // Nombre de la plantilla Thymeleaf a renderizar
     }
 
 

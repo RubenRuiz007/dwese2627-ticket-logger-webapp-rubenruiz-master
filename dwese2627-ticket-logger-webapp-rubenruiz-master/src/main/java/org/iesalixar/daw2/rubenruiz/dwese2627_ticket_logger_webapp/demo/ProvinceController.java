@@ -35,19 +35,62 @@ public class ProvinceController {
     @Autowired
     private MessageSource messageSource;
 
+    /**
+     * Lista las provincias de forma paginada.
+     *
+     * @param page   número de página (0-based)
+     * @param size   tamaño de página (nº de elementos por página)
+     * @param model  modelo para la vista
+     * @param locale configuración regional (i18n)
+     */
+    /**
+     * Lista paginada y ordenada de provincias.
+     *
+     * @param page      número de página (0-based)
+     * @param size      tamaño de página (nº de elementos por página)
+     * @param sortField campo por el que se ordenan los resultados (id, code, name, regionName).
+     * @param sortDir   dirección de ordenación ("asc" o "desc").
+     * @param model     modelo para la vista
+     * @param locale    configuración regional (i18n)
+     */
     @GetMapping
-    public String listProvinces(Model model, Locale locale) {
-        logger.info("Solicitando la lista de todas las provincias...");
+    public String listProvinces(@RequestParam(name = "page", defaultValue = "0") int page,
+                                @RequestParam(name = "size", defaultValue = "10") int size,
+                                @RequestParam(name = "sortField", defaultValue = "name") String sortField,
+                                @RequestParam(name = "sortDir", defaultValue = "asc") String sortDir,
+                                Model model,
+                                Locale locale) {
+        logger.info("Solicitando la lista de provincias... page={}, size={}, sortField={}, sortDir={}",
+                page, size, sortField, sortDir);
+        if (page < 0) page = 0;
+        if (size <= 0) size = 10;
         try {
-            List<Province> listProvinces = provinceDAO.listAllProvinces();
-            List<ProvinceDTO> listProvincesDTOs = ProvinceMapper.toDTOList(listProvinces);
-            logger.info("Se han cargado {} provincias.", listProvincesDTOs.size());
-            model.addAttribute("listProvinces", listProvincesDTOs);
+            long totalElements = provinceDAO.countProvinces();
+            int totalPages = (int) Math.ceil((double) totalElements / size);
+            // Ajustar si se pide una página fuera de rango
+            if (totalPages > 0 && page >= totalPages) {
+                page = totalPages - 1;
+            }
+            List<Province> entities = provinceDAO.listProvincesPage(page, size, sortField, sortDir);
+            List<ProvinceDTO> dtos = ProvinceMapper.toDTOList(entities);
+            logger.info("Se han cargado {} provincias en la página {}.", dtos.size(), page);
+
+            model.addAttribute("listProvinces", dtos);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("pageSize", size);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("totalElements", totalElements);
+
+            // Para que la vista pueda construir los enlaces de ordenación
+            model.addAttribute("sortField", sortField);
+            model.addAttribute("sortDir", sortDir);
+            model.addAttribute("reverseSortDir", "asc".equalsIgnoreCase(sortDir) ? "desc" : "asc");
         } catch (Exception e) {
-            logger.error("Error al listar las provincias: {}", e.getMessage());
+            logger.error("Error al listar las provincias: {}", e.getMessage(), e);
             String errorMessage = messageSource.getMessage("msg.province-controller.list.error", null, locale);
             model.addAttribute("errorMessage", errorMessage);
         }
+
         return "views/province/province-list";
     }
 

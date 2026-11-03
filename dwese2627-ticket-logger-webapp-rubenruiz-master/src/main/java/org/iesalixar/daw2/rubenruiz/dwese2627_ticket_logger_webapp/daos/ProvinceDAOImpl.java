@@ -2,6 +2,7 @@ package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.daos;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Province;
 import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Region;
@@ -144,6 +145,75 @@ public class ProvinceDAOImpl implements ProvinceDAO {
         } else {
             logger.warn("Province with id: {} not found.", id);
         }
+    }
+
+    /**
+     * Lista una página de provincias con su región asociada.
+     *
+     * @param page página actual (0-based)
+     * @param size número de elementos por página
+     * @return lista de provincias para esa página
+     */
+    /**
+     * Lista una página de provincias con su región asociada.
+     *
+     * @param page      página actual (0-based)
+     * @param size      número de elementos por página
+     * @param sortField campo por el que se ordenan los resultados (id, code, name, regionName).
+     * @param sortDir   dirección de ordenación ("asc" o "desc").
+     * @return lista de provincias para esa página
+     */
+    @Override
+    public List<Province> listProvincesPage(int page, int size, String sortField, String sortDir) {
+        logger.info("Listing provinces page={}, size={}, sortField={}, sortDir={} from the database.",
+                page, size, sortField, sortDir);
+        int offset = page * size;
+
+        // 1. Construcción de Criteria
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Province> cq = cb.createQuery(Province.class);
+        Root<Province> root = cq.from(Province.class);
+
+        // Hacemos fetch de region para que venga cargada (equivalente al JOIN FETCH)
+        root.fetch("region", JoinType.INNER);
+        // Join separado para poder usar region.name en ORDER BY
+        Join<Province, Region> regionJoin = root.join("region", JoinType.INNER);
+
+        // 2. Determinar el campo de ordenación permitido (whitelist)
+        Path<?> sortPath;
+        switch (sortField) {
+            case "id"         -> sortPath = root.get("id");
+            case "code"       -> sortPath = root.get("code");
+            case "name"       -> sortPath = root.get("name");
+            case "regionName" -> sortPath = regionJoin.get("name"); // region.name
+            default           -> {
+                logger.warn("Unknown sortField '{}' for Province, defaulting to 'name'.", sortField);
+                sortPath = root.get("name");
+            }
+        }
+
+        // 3. Dirección de ordenación
+        boolean descending = "desc".equalsIgnoreCase(sortDir);
+        Order order = descending ? cb.desc(sortPath) : cb.asc(sortPath);
+
+        // 4. Aplicar ordenación a la query
+        cq.select(root).orderBy(order);
+
+        // 5. Crear TypedQuery, aplicar paginación y ejecutar
+        return entityManager.createQuery(cq)
+                .setFirstResult(offset)
+                .setMaxResults(size)
+                .getResultList();
+    }
+
+    /**
+     * Devuelve el número total de provincias.
+     */
+    @Override
+    public long countProvinces() {
+        String hql = "SELECT COUNT(p) FROM Province p";
+        Long total = entityManager.createQuery(hql, Long.class).getSingleResult();
+        return (total != null) ? total : 0L;
     }
 
 }
