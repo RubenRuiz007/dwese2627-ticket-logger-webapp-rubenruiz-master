@@ -42,7 +42,7 @@
                 <td th:text="${province.code}"></td>
                 <td th:text="${province.name}"></td>
                 <!-- Nombre de la Comunidad Autónoma asociada -->
-                <td th:text="${province.region != null ? province.region.name : ''}"></td>
+                <td th:text="${province.regionName}"></td>
                 <td>
                     <!-- Editar -->
                     <a th:href="@{/provinces/edit(id=${province.id})}"

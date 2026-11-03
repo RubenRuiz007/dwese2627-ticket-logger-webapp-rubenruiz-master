@@ -21,29 +21,19 @@ public class Region {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "{msg.region.code.notEmpty}")
-    @Size(max = 2, message = "{msg.region.code.size}")
-    @Column(name = "code", nullable = false, length = 2) // Define la columna correspondiente en la tabla.
+    @Column(name = "code", nullable = false, length = 2)
     private String code;
 
-    @NotEmpty(message = "{msg.region.name.notEmpty}")
-    @Size(max = 100, message = "{msg.region.name.notEmpty}")
-    @Column(name = "name", nullable = false, length = 100) // Define la columna correspondiente en la tabla.
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    /**
-     * Lista de provincias pertenecientes a la región.
-     * - LAZY: no se cargan hasta que se accede a 'provinces'.
-     * - mappedBy: el dueño de la relación es Province.region.
-     * - Con cascade ALL: Así se borrarían las provincias asociadas a la región si se elimina la región.
-     */
     @OneToMany(
             mappedBy = "region",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.ALL},
             orphanRemoval = false
     )
-    @ToString.Exclude                 // Evita bucles en toString()
-    @EqualsAndHashCode.Exclude        // Evita ciclos en equals/hashCode
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Province> provinces = new ArrayList<>();
 }
