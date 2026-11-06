@@ -96,6 +96,11 @@
                 <!-- Nombre de la Comunidad Autónoma asociada -->
                 <td th:text="${province.regionName}"></td>
                 <td>
+                    <!-- Ver detalle -->
+                    <a th:href="@{/provinces/detail(id=${province.id})}"
+                       class="btn btn-outline-secondary btn-sm me-1"
+                       th:text="#{msg.province-list.viewDetail}"></a>
+
                     <!-- Editar -->
                     <a th:href="@{/provinces/edit(id=${province.id})}"
                        class="btn btn-primary btn-sm"
