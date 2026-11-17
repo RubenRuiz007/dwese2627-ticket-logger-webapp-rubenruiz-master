@@ -1,23 +1,18 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos;
 
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO para actualizar regiones.
- */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class RegionUpdateDTO {
-
-    @NotNull(message = "{msg.region.id.notEmpty}")
     private Long id;
 
     @NotBlank(message = "{msg.region.code.notEmpty}")

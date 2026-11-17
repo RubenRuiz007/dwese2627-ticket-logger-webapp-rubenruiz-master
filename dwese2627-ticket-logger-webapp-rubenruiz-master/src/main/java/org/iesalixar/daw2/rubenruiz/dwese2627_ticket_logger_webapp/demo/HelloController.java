@@ -1,4 +1,4 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.demo;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.demo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

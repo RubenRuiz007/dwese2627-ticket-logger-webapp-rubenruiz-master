@@ -1,9 +1,9 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.mappers;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.mappers;
 
-import lombok.experimental.UtilityClass;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos.*;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Province;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Region;
+
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos.*;
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Province;
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Region;
 
 import java.util.List;
 
@@ -11,12 +11,11 @@ import java.util.List;
  * Mapper utilitario entre entidades (Region/Province) y sus DTOs.
  * Implementación simple sin frameworks de mapeo.
  */
-@UtilityClass
 public class RegionMapper {
 
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
     // Entity → DTO (listado/tabla básico)
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
 
     /**
      * Convierte una entidad {@link Region} a {@link RegionDTO}.
@@ -38,9 +37,9 @@ public class RegionMapper {
         return entities.stream().map(RegionMapper::toDTO).toList();
     }
 
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
     // Entity → DTO (detalle con provincias)
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
 
     /**
      * Convierte una {@link Region} a {@link RegionDetailDTO}, mapeando su lista de provincias.
@@ -75,9 +74,6 @@ public class RegionMapper {
         return provinces.stream().map(RegionMapper::toProvinceDTO).toList();
     }
 
-    /**
-     * Convierte una {@link Region} a {@link RegionUpdateDTO} para precargar el formulario de edición.
-     */
     public static RegionUpdateDTO toUpdateDTO(Region entity) {
         if (entity == null) return null;
         RegionUpdateDTO dto = new RegionUpdateDTO();
@@ -87,9 +83,7 @@ public class RegionMapper {
         return dto;
     }
 
-    // ─────────────────────────────────────
-    // DTO (create/update) → Entity
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
 
     /**
      * Crea una nueva entidad {@link Region} desde un {@link RegionCreateDTO}.
@@ -108,7 +102,7 @@ public class RegionMapper {
      * Útil si trabajas con update por reemplazo.
      * Si prefieres evitar perder relaciones, carga la entidad de BD y copia campos a mano.
      */
-    public static Region toEntity(RegionUpdateDTO dto) {
+    public Region toEntity(RegionUpdateDTO dto) {
         if (dto == null) return null;
         Region e = new Region();
         e.setId(dto.getId());

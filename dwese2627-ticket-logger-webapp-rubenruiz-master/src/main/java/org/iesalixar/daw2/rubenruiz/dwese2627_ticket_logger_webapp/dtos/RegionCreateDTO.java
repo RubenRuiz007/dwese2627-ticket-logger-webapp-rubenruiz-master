@@ -1,5 +1,6 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos;
 
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -7,16 +8,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO para crear regiones.
- */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class RegionCreateDTO {
-
-    // En este DTO este campo siempre vendrá null porque es una inserción
+    //En este DTO este campo siempre vendrá null porque es una inse...
     private Long id;
 
     @NotBlank(message = "{msg.region.code.notEmpty}")

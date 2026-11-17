@@ -9,7 +9,9 @@
 
 <!-- Contenido dinámico -->
 <main class="list-page">
-    <div class="list-card">
+    <div class="list-card"
+         th:with="sortField=${sortParam != null ? #strings.substringBefore(sortParam, ',') : 'name'},
+                   sortDir=${sortParam != null ? #strings.substringAfter(sortParam, ',') : 'asc'}">
 
         <!-- Título listado -->
         <h1 th:text="#{msg.province-list.title}"></h1>
@@ -21,21 +23,20 @@
 
         <!-- Mensaje de error -->
         <div th:if="${errorMessage}"
-             class="alert alert-danger"
+             class="alert alert-danger mt-3"
              th:text="${errorMessage}"></div>
 
         <!-- Tabla de provincias -->
-        <table class="table table-bordered table-striped mt-3">
+        <table class="table table-bordered table-striped mt-3" th:if="${page != null}">
             <thead>
             <tr>
                 <!-- ID -->
                 <th>
                     <a class="text-decoration-none"
                        th:href="@{/provinces(
-                page=${currentPage},
-                size=${pageSize},
-                sortField='id',
-                sortDir=${(sortField == 'id') ? reverseSortDir : 'asc'}
+                page=${page.number},
+                size=${page.size},
+                sort=${(sortField == 'id' and sortDir == 'asc') ? 'id,desc' : 'id,asc'}
             )}">
                         <span th:text="#{msg.province-list.id}"></span>
                         <span class="ms-1" th:if="${sortField == 'id'}" th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
@@ -46,10 +47,9 @@
                 <th>
                     <a class="text-decoration-none"
                        th:href="@{/provinces(
-                page=${currentPage},
-                size=${pageSize},
-                sortField='code',
-                sortDir=${(sortField == 'code') ? reverseSortDir : 'asc'}
+                page=${page.number},
+                size=${page.size},
+                sort=${(sortField == 'code' and sortDir == 'asc') ? 'code,desc' : 'code,asc'}
             )}">
                         <span th:text="#{msg.province-list.code}"></span>
                         <span class="ms-1" th:if="${sortField == 'code'}" th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
@@ -60,10 +60,9 @@
                 <th>
                     <a class="text-decoration-none"
                        th:href="@{/provinces(
-                page=${currentPage},
-                size=${pageSize},
-                sortField='name',
-                sortDir=${(sortField == 'name') ? reverseSortDir : 'asc'}
+                page=${page.number},
+                size=${page.size},
+                sort=${(sortField == 'name' and sortDir == 'asc') ? 'name,desc' : 'name,asc'}
             )}">
                         <span th:text="#{msg.province-list.name}"></span>
                         <span class="ms-1" th:if="${sortField == 'name'}" th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
@@ -74,22 +73,20 @@
                 <th>
                     <a class="text-decoration-none"
                        th:href="@{/provinces(
-                page=${currentPage},
-                size=${pageSize},
-                sortField='regionName',
-                sortDir=${(sortField == 'regionName') ? reverseSortDir : 'asc'}
+                page=${page.number},
+                size=${page.size},
+                sort=${(sortField == 'region.name' and sortDir == 'asc') ? 'region.name,desc' : 'region.name,asc'}
             )}">
                         <span th:text="#{msg.province-list.region}"></span>
-                        <span class="ms-1" th:if="${sortField == 'regionName'}" th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
+                        <span class="ms-1" th:if="${sortField == 'region.name'}" th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
                     </a>
                 </th>
 
                 <th th:text="#{msg.province-list.actions}"></th>
             </tr>
             </thead>
-            <!-- (aquí falta <tbody> y <tr th:each=...>) -->
-            <tbody th:each="province:${listProvinces}">
-            <tr>
+            <tbody>
+            <tr th:each="province : ${page.content}">
                 <td th:text="${province.id}"></td>
                 <td th:text="${province.code}"></td>
                 <td th:text="${province.name}"></td>
@@ -120,12 +117,12 @@
         </table>
         <!-- Paginación -->
         <div class="d-flex justify-content-between align-items-center mt-3"
-             th:if="${totalPages > 0}">
+             th:if="${page != null and page.totalPages > 0}">
 
             <!-- Info de página -->
             <div>
                 <!-- "Página X de Y (N registros en total)" -->
-                <span th:text="#{msg.pagination.info(${currentPage} + 1, ${totalPages}, ${totalElements})}"></span>
+                <span th:text="#{msg.pagination.info(${page.number} + 1, ${page.totalPages}, ${page.totalElements})}"></span>
             </div>
 
             <!-- Controles de paginación -->
@@ -133,9 +130,9 @@
                 <ul class="pagination mb-0">
 
                     <!-- Botón Anterior -->
-                    <li class="page-item" th:classappend="${currentPage == 0} ? ' disabled'">
+                    <li class="page-item" th:classappend="${page.first} ? ' disabled'">
                         <a class="page-link"
-                           th:href="@{/provinces(page=${currentPage - 1}, size=${pageSize}, sortField=${sortField}, sortDir=${sortDir})}"
+                           th:href="@{/provinces(page=${page.number - 1}, size=${page.size}, sort=${sortParam})}"
                            th:aria-label="#{msg.pagination.prev}">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -143,17 +140,17 @@
 
                     <!-- Números de página -->
                     <li class="page-item"
-                        th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                        th:classappend="${i == currentPage} ? ' active'">
+                        th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                        th:classappend="${i == page.number} ? ' active'">
                         <a class="page-link"
                            th:text="${i + 1}"
-                           th:href="@{/provinces(page=${i}, size=${pageSize}, sortField=${sortField}, sortDir=${sortDir})}"></a>
+                           th:href="@{/provinces(page=${i}, size=${page.size}, sort=${sortParam})}"></a>
                     </li>
 
                     <!-- Botón Siguiente -->
-                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? ' disabled'">
+                    <li class="page-item" th:classappend="${page.last} ? ' disabled'">
                         <a class="page-link"
-                           th:href="@{/provinces(page=${currentPage + 1}, size=${pageSize}, sortField=${sortField}, sortDir=${sortDir})}"
+                           th:href="@{/provinces(page=${page.number + 1}, size=${page.size}, sort=${sortParam})}"
                            th:aria-label="#{msg.pagination.next}">
                             <span aria-hidden="true">&raquo;</span>
                         </a>

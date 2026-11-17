@@ -1,21 +1,19 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos;
 
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO de detalle de Provincia.
- * Incluye la región a la que pertenece para poder navegar desde el detalle.
- */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProvinceDetailDTO {
     private Long id;
     private String code;
     private String name;
-
-    /** Región asociada a la provincia (objeto embebido para el detalle). */
     private RegionDTO region;
 }

@@ -1,13 +1,11 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.mappers;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.mappers;
 
-import lombok.experimental.UtilityClass;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos.ProvinceCreateDTO;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos.ProvinceDTO;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos.ProvinceDetailDTO;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos.ProvinceUpdateDTO;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Province;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Region;
-
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos.ProvinceCreateDTO;
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos.ProvinceDTO;
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos.ProvinceDetailDTO;
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos.ProvinceUpdateDTO;
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Province;
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Region;
 
 import java.util.List;
 
@@ -15,33 +13,41 @@ import java.util.List;
  * Mapper utilitario entre la entidad Province y sus DTOs.
  * Implementación simple sin frameworks de mapeo.
  */
-@UtilityClass
 public class ProvinceMapper {
 
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
     // Entity → DTO (listado/tabla básico)
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
 
+    /**
+     * Convierte una entidad {@link Province} a {@link ProvinceDTO}.
+     */
     public static ProvinceDTO toDTO(Province entity) {
         if (entity == null) return null;
         ProvinceDTO dto = new ProvinceDTO();
         dto.setId(entity.getId());
         dto.setCode(entity.getCode());
         dto.setName(entity.getName());
-        // Establecemos solo el nombre de la región, que es lo único que mostramos en los listados.
-        dto.setRegionName(entity.getRegion() != null ? entity.getRegion().getName() : null);
+        // Establecemos solo el nombre de la región que es lo único que mostramos en los listados.
+        dto.setRegionName(entity.getRegion().getName());
         return dto;
     }
 
+    /**
+     * Convierte una lista de {@link Province} a una lista de {@link ProvinceDTO}.
+     */
     public static List<ProvinceDTO> toDTOList(List<Province> entities) {
         if (entities == null) return List.of();
         return entities.stream().map(ProvinceMapper::toDTO).toList();
     }
 
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
     // Entity → DTO (detalle con región)
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
 
+    /**
+     * Convierte una {@link Province} a {@link ProvinceDetailDTO}, incluyendo la región asociada.
+     */
     public static ProvinceDetailDTO toDetailDTO(Province entity) {
         if (entity == null) return null;
         ProvinceDetailDTO dto = new ProvinceDetailDTO();
@@ -53,7 +59,7 @@ public class ProvinceMapper {
     }
 
     /**
-     * Convierte una Province a ProvinceUpdateDTO para precargar el formulario de edición.
+     * Convierte una {@link Province} a {@link ProvinceUpdateDTO} para precargar el formulario de edición.
      */
     public static ProvinceUpdateDTO toUpdateDTO(Province entity) {
         if (entity == null) return null;
@@ -65,12 +71,12 @@ public class ProvinceMapper {
         return dto;
     }
 
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
     // DTO (create/update) → Entity
-    // ─────────────────────────────────────
+    // ─────────────────────────────────────────
 
     /**
-     * Crea una nueva entidad Province desde un ProvinceCreateDTO.
+     * Crea una nueva entidad {@link Province} desde un {@link ProvinceCreateDTO}.
      * (id se deja null para autogenerarse)
      */
     public static Province toEntity(ProvinceCreateDTO dto) {
@@ -78,8 +84,8 @@ public class ProvinceMapper {
         Province e = new Province();
         e.setCode(dto.getCode());
         e.setName(dto.getName());
-        // Creamos una region vacía y le pasamos solo el ID,
-        // ya que para la inserción de una provincia solo necesitamos el ID de la región
+        //Creamos una region vacía y le pasamos solo el ID,
+        //ya que para la inserción de una província solo necesitamos el ID de la región
         Region region = new Region();
         region.setId(dto.getRegionId());
         e.setRegion(region);
@@ -87,9 +93,9 @@ public class ProvinceMapper {
     }
 
     /**
-     * Crea una entidad Province desde un ProvinceUpdateDTO.
+     * Crea una entidad {@link Province} desde un {@link ProvinceUpdateDTO}.
      * Útil si trabajas con update por reemplazo.
-     * Si prefieres evitar perder relaciones/estado, usa copyToExistingEntity.
+     * Si prefieres evitar perder relaciones/estado, usa {@link #copyToExistingEntity(ProvinceUpdateDTO, Province)}.
      */
     public static Province toEntity(ProvinceUpdateDTO dto) {
         if (dto == null) return null;
@@ -97,8 +103,8 @@ public class ProvinceMapper {
         e.setId(dto.getId());
         e.setCode(dto.getCode());
         e.setName(dto.getName());
-        // Creamos una region vacía y le pasamos solo el ID,
-        // ya que para la actualización de la provincia solo necesitamos el ID de región
+        //Creamos una region vacía y le pasamos solo el ID,
+        //ya que para la actualización de la provincia solo necesitamos el ID de región
         Region region = new Region();
         region.setId(dto.getRegionId());
         e.setRegion(region);
@@ -106,13 +112,15 @@ public class ProvinceMapper {
     }
 
     /**
-     * Copia campos editables desde un ProvinceUpdateDTO a una entidad existente.
+     * Copia campos editables desde un {@link ProvinceUpdateDTO} a una entidad existente.
      * Recomendado si quieres mantener relaciones y el estado de persistencia del contexto JPA.
      */
     public static void copyToExistingEntity(ProvinceUpdateDTO dto, Province entity) {
         if (dto == null || entity == null) return;
         entity.setCode(dto.getCode());
         entity.setName(dto.getName());
+        //Creamos una region vacía y le pasamos solo el ID,
+        //ya que para la actualización de la provincia solo necesitamos el ID de región
         Region region = new Region();
         region.setId(dto.getRegionId());
         entity.setRegion(region);

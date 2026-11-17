@@ -1,4 +1,4 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.demo;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.demo;
 
 import ch.qos.logback.core.model.Model;
 import org.springframework.stereotype.Controller;

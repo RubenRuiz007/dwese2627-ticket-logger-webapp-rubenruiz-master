@@ -1,5 +1,6 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos;
 
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,27 +9,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO para actualización (UPDATE) de Province.
- * Incluye id obligatorio y el id de la región.
- */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ProvinceUpdateDTO {
-
     @NotNull(message = "{msg.province.id.notEmpty}")
     private Long id;
 
-    @NotBlank(message = "{msg.province.code.notEmpty}")
-    @Size(max = 2, message = "{msg.province.code.size}")
+    @NotBlank(message = "{msg.region.code.notEmpty}")
+    @Size(max = 2, message = "{msg.region.code.size}")
     private String code;
 
-    @NotBlank(message = "{msg.province.name.notEmpty}")
-    @Size(max = 100, message = "{msg.province.name.size}")
+    @NotBlank(message = "{msg.region.name.notEmpty}")
+    @Size(max = 100, message = "{msg.region.name.notEmpty}")
     private String name;
 
-    @NotNull(message = "{msg.province.regionId.notNull}")
+    @NotNull(message = "{msg.province.regionId.notNUll}")
     private Long regionId;
 }

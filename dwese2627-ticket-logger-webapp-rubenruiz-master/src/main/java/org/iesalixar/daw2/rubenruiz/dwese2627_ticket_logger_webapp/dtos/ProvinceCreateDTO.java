@@ -1,5 +1,6 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos;
 
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -7,26 +8,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO para creación (INSERT) de Province.
- * No incluye id (lo genera la BD).
- */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProvinceCreateDTO {
-
-    // En este DTO este campo siempre vendrá null porque es una inserción
     private Long id;
 
-    @NotBlank(message = "{msg.province.code.notEmpty}")
-    @Size(max = 2, message = "{msg.province.code.size}")
+    @NotBlank(message = "{msg.region.code.notEmpty}")
+    @Size(max = 2, message = "{msg.region.code.size}")
     private String code;
 
-    @NotBlank(message = "{msg.province.name.notEmpty}")
-    @Size(max = 100, message = "{msg.province.name.size}")
+    @NotBlank(message = "{msg.region.name.notEmpty}")
+    @Size(max = 100, message = "{msg.region.name.notEmpty}")
     private String name;
 
-    @NotNull(message = "{msg.province.regionId.notNull}")
+    @NotNull(message = "{msg.province.regionId.notNUll}")
     private Long regionId;
 }

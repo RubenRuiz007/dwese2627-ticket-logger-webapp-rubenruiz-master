@@ -1,17 +1,11 @@
-package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.daos;
+package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.daos;
 
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Province;
-import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Region;
+import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Province;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface ProvinceDAO {
     List<Province> listAllProvinces();
-
-    List<Province> listProvincesPage(int page, int size, String sortField, String sortDir);
-
-    long countProvinces();
 
     void insertProvince(Province province);
 
@@ -24,4 +18,8 @@ public interface ProvinceDAO {
     boolean existsProvinceByCode(String code);
 
     boolean existsProvinceByCodeAndNotId(String code, Long id);
+
+    List<Province> listProvincesPage(int page, int size, String sortfield,String sortdir);
+
+    long countProvinces();
 }
