@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head ('Ticket Logger - Region Detail')"></head>
+<head th:replace="fragments/head :: head ('Ticket Logger - Home')"></head>
 
 
 <body class="d-flex flex-column h-100">
@@ -34,7 +34,6 @@
                 <dd class="col-sm-9" th:text="${region.name}"></dd>
             </dl>
         </div>
-
         <!-- Provincias -->
         <div class="mt-4">
             <h2 class="h5" th:text="#{msg.region-detail.section.provinces}"></h2>
@@ -71,16 +70,11 @@
                 </table>
             </div>
         </div>
-
-        <!-- Volver al listado -->
         <div class="mt-4">
-            <a class="btn btn-secondary" th:href="@{/regions}"
-               th:text="#{msg.region-detail.action.back}"></a>
+            <a class="btn btn-secondary" th:href="@{/regions}" th:text="#{msg.region-detail.action.back}"></a>
         </div>
-
     </div>
 </main>
-
 <!-- Insertar el fragmento del footer -->
 <footer th:replace="fragments/footer :: footer"></footer>
 

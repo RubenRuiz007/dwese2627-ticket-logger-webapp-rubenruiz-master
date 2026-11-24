@@ -8,7 +8,7 @@ import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos.RegionUp
 import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Region;
 import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.exceptions.DuplicateResourceException;
 import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.exceptions.ResourceNotFoundException;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.mappers.RegionMapper;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.mappers.RegionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

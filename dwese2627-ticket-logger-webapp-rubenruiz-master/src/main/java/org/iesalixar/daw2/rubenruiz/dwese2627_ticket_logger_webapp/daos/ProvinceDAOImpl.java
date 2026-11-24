@@ -1,11 +1,11 @@
-package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.daos;
+package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.daos;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Province;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Region;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Province;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Region;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;

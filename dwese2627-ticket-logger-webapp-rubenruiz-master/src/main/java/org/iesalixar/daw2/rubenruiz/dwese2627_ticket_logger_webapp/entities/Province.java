@@ -1,4 +1,4 @@
-package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities;
+package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

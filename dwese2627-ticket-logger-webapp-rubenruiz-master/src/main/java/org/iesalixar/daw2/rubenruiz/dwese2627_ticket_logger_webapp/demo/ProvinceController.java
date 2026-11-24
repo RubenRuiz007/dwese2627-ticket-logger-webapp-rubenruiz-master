@@ -1,11 +1,11 @@
-package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.demo;
+package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.demo;
 
 import jakarta.validation.Valid;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos.*;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.exceptions.DuplicateResourceException;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.exceptions.ResourceNotFoundException;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.services.ProvinceService;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.services.RegionService;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos.*;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.exceptions.DuplicateResourceException;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.exceptions.ResourceNotFoundException;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.services.ProvinceService;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.services.RegionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

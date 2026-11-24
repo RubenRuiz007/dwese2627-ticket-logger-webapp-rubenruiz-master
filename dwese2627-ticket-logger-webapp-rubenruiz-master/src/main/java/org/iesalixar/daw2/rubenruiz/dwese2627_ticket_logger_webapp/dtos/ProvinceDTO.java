@@ -1,4 +1,4 @@
-package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos;
+package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos;
 
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;

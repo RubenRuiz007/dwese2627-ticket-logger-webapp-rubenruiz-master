@@ -1,6 +1,6 @@
-package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.daos;
+package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.daos;
 
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Province;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Province;
 
 import java.util.List;
 

@@ -9,6 +9,7 @@
 
 <!-- Contenido dinámico -->
 <main class="list-page">
+    <!-- sortField y sortDir se sacan de sortParam ("campo,asc|desc") que envía el controller -->
     <div class="list-card"
          th:with="sortField=${sortParam != null ? #strings.substringBefore(sortParam, ',') : 'name'},
                    sortDir=${sortParam != null ? #strings.substringAfter(sortParam, ',') : 'asc'}">
@@ -37,9 +38,10 @@
                 page=${page.number},
                 size=${page.size},
                 sort=${(sortField == 'id' and sortDir == 'asc') ? 'id,desc' : 'id,asc'}
-            )}">
+           )}">
                         <span th:text="#{msg.province-list.id}"></span>
-                        <span class="ms-1" th:if="${sortField == 'id'}" th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
+                        <span class="ms-1" th:if="${sortField == 'id'}"
+                              th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
                     </a>
                 </th>
 
@@ -50,9 +52,10 @@
                 page=${page.number},
                 size=${page.size},
                 sort=${(sortField == 'code' and sortDir == 'asc') ? 'code,desc' : 'code,asc'}
-            )}">
+           )}">
                         <span th:text="#{msg.province-list.code}"></span>
-                        <span class="ms-1" th:if="${sortField == 'code'}" th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
+                        <span class="ms-1" th:if="${sortField == 'code'}"
+                              th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
                     </a>
                 </th>
 
@@ -63,9 +66,10 @@
                 page=${page.number},
                 size=${page.size},
                 sort=${(sortField == 'name' and sortDir == 'asc') ? 'name,desc' : 'name,asc'}
-            )}">
+           )}">
                         <span th:text="#{msg.province-list.name}"></span>
-                        <span class="ms-1" th:if="${sortField == 'name'}" th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
+                        <span class="ms-1" th:if="${sortField == 'name'}"
+                              th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
                     </a>
                 </th>
 
@@ -76,28 +80,25 @@
                 page=${page.number},
                 size=${page.size},
                 sort=${(sortField == 'region.name' and sortDir == 'asc') ? 'region.name,desc' : 'region.name,asc'}
-            )}">
+           )}">
                         <span th:text="#{msg.province-list.region}"></span>
-                        <span class="ms-1" th:if="${sortField == 'region.name'}" th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
+                        <span class="ms-1" th:if="${sortField == 'region.name'}"
+                              th:text="${sortDir == 'asc'} ? '▲' : '▼'"></span>
                     </a>
                 </th>
 
                 <th th:text="#{msg.province-list.actions}"></th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:each="province : ${page.content}">
+            <tbody th:each="province:${page.content}">
+            <tr>
                 <td th:text="${province.id}"></td>
                 <td th:text="${province.code}"></td>
                 <td th:text="${province.name}"></td>
                 <!-- Nombre de la Comunidad Autónoma asociada -->
                 <td th:text="${province.regionName}"></td>
-                <td>
-                    <!-- Ver detalle -->
-                    <a th:href="@{/provinces/detail(id=${province.id})}"
-                       class="btn btn-outline-secondary btn-sm me-1"
-                       th:text="#{msg.province-list.viewDetail}"></a>
-
+                <td><a th:href="@{/provinces/detail(id=${province.id})}" class="btn btn-outline-secondary btn-sm me-1"
+                       th:text = "#{msg.province-list.viewDetail}"></a>
                     <!-- Editar -->
                     <a th:href="@{/provinces/edit(id=${province.id})}"
                        class="btn btn-primary btn-sm"
@@ -119,18 +120,22 @@
         <div class="d-flex justify-content-between align-items-center mt-3"
              th:if="${page != null and page.totalPages > 0}">
 
+
             <!-- Info de página -->
             <div>
                 <!-- "Página X de Y (N registros en total)" -->
                 <span th:text="#{msg.pagination.info(${page.number} + 1, ${page.totalPages}, ${page.totalElements})}"></span>
             </div>
 
+
             <!-- Controles de paginación -->
             <nav th:aria-label="#{msg.pagination.aria.label}">
                 <ul class="pagination mb-0">
 
+
                     <!-- Botón Anterior -->
-                    <li class="page-item" th:classappend="${page.first} ? ' disabled'">
+                    <li class="page-item"
+                        th:classappend="${page.first} ? ' disabled'">
                         <a class="page-link"
                            th:href="@{/provinces(page=${page.number - 1}, size=${page.size}, sort=${sortParam})}"
                            th:aria-label="#{msg.pagination.prev}">
@@ -148,7 +153,8 @@
                     </li>
 
                     <!-- Botón Siguiente -->
-                    <li class="page-item" th:classappend="${page.last} ? ' disabled'">
+                    <li class="page-item"
+                        th:classappend="${page.last} ? ' disabled'">
                         <a class="page-link"
                            th:href="@{/provinces(page=${page.number + 1}, size=${page.size}, sort=${sortParam})}"
                            th:aria-label="#{msg.pagination.next}">

@@ -20,7 +20,6 @@
             <!-- Contenido colapsable -->
             <div class="collapse navbar-collapse" id="navbarMenu">
 
-
                 <!-- Menú principal -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -35,25 +34,14 @@
                 </ul>
 
 
-                <!-- Avatar y menú usuario -->
-                <div class="dropdown text-end">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <img th:src="@{/images/avatar.svg}" alt="avatar" width="40" height="40" class="rounded-circle border border-2 border-primary-subtle">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-                        <li><a class="dropdown-item" th:href="@{/profile/edit}">Editar perfil</a></li>
-                        <li><a class="dropdown-item" th:href="@{/profile/change-password}">Cambiar contraseña</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" th:href="@{/logout}">Cerrar sesión</a></li>
-                    </ul>
-                </div>
-
-                <!-- Selector de idioma -->
+                <!-- Selector de idioma (conserva el id de la página actual) -->
                 <form method="get"
                       class="d-lg-flex align-items-center me-3"
                       th:action="@{''}">
 
+                    <input type="hidden" name="id"
+                           th:if="${param.id != null}"
+                           th:value="${param.id[0]}">
 
                     <label for="langSelect" class="visually-hidden">Idioma</label>
                     <select id="langSelect" name="lang" class="form-select form-select-sm" onchange="this.form.submit()">
@@ -62,6 +50,23 @@
                     </select>
                 </form>
 
+
+                <!-- Avatar y menú usuario -->
+                <div class="dropdown text-end">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <img th:src="@{/images/avatar.svg}" alt="avatar" width="40" height="40"
+                             class="rounded-circle border border-2 border-primary-subtle">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end text-small shadow">
+                        <li><a class="dropdown-item" th:href="@{/profile/edit}">Editar perfil</a></li>
+                        <li><a class="dropdown-item" th:href="@{/profile/change-password}">Cambiar contraseña</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" th:href="@{/logout}">Cerrar sesión</a></li>
+                    </ul>
+                </div>
 
             </div>
         </div>

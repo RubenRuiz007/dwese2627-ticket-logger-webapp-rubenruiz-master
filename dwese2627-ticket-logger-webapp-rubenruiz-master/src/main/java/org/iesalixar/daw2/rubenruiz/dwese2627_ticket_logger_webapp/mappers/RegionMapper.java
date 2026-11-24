@@ -1,9 +1,9 @@
-package org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.mappers;
+package org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.mappers;
 
 
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.dtos.*;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Province;
-import org.iesalixar.daw2.sergioruiz.dwese2627_ticket_logger_webapp.entities.Region;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.dtos.*;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Province;
+import org.iesalixar.daw2.rubenruiz.dwese2627_ticket_logger_webapp.entities.Region;
 
 import java.util.List;
 
